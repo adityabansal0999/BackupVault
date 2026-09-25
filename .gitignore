@@ -216,3 +216,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# BackupVault generated backups
+backups/*.sql
+backups/*.sql.gz
+backups/*.gz
+!backups/.gitkeep
