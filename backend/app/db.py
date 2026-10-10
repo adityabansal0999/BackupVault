@@ -1,6 +1,4 @@
-# small MySQL connection pool for the metadata db (backupvault_meta)
-# also has a helper to load .sql files from sql/queries so we dont
-# hardcode sql strings inside the python files
+
 import os
 import mysql.connector.pooling
 from backend.app import config
@@ -33,7 +31,7 @@ def get_conn():
 
 
 def load_sql(name):
-    # name is the file name without .sql, eg "insert_backup"
+    
     if name in _sql_cache:
         return _sql_cache[name]
     path = os.path.join(SQL_DIR, name + ".sql")

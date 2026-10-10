@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BackupVault</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="page">
+<header class="topbar">
+<div class="brand">
+<div class="logo">BV</div>
+<div>
+<h1>BackupVault</h1>
+<p>Daily protection for your databases</p>
+</div>
+</div>
+<div class="topActions">
+<span class="live"><span class="dot"></span> Live</span>
+<button class="btn primary" onclick="triggerBackup()">Create Backup Now</button>
+</div>
+</header>
+
+<section class="stats">
+<div class="stat">
+<div class="statLabel">Latest Backup</div>
+<div class="statValue" id="lastFile">-</div>
+<div class="statMeta" id="lastMeta">Checking</div>
+</div>
+<div class="stat">
+<div class="statLabel">Next Scheduled Run</div>
+<div class="statValue" id="nextTime">Today 02:00 AM</div>
+<div class="statMeta">Every day at 2 AM, 90 days kept</div>
+</div>
+<div class="stat">
+<div class="statLabel">Storage Used</div>
+<div class="statValue" id="totalStore">-</div>
+<div class="statMeta" id="totalCount">-</div>
+</div>
+<div class="stat">
+<div class="statLabel">System Health</div>
+<div class="statValue" id="successRate">-</div>
+<div class="statMeta" id="healthMeta">Based on last 20 backups</div>
+</div>
+</section>
+
+<section class="controls">
+<div class="controlLeft">
+<div class="field">
+<label>Database</label>
+<select id="dbFilter" onchange="loadHistory()">
+<option value="">All databases</option>
+<option value="customer_db">customer_db</option>
+</select>
+</div>
+<div class="field">
+<label>From</label>
+<input type="date" id="fromDate">
+</div>
+<div class="field">
+<label>To</label>
+<input type="date" id="toDate">
+</div>
+<div class="field">
+<label>How Created</label>
+<select id="typeFilter" onchange="loadHistory()">
+<option value="">All</option>
+<option value="scheduler">Scheduled</option>
+<option value="manual">Manual</option>
+</select>
+</div>
+</div>
+<div class="controlRight">
+<button class="btn ghost" onclick="clearFilter()">Clear</button>
+<button class="btn" onclick="loadHistory()">Apply</button>
+</div>
+</section>
+
+<section class="panel">
+<div class="panelHead">
+<div>
+<h2>Backup History</h2>
+<p>Every backup shows which database, when it was created and how it was created. Manual and scheduled backups appear together.</p>
+</div>
+<span class="count" id="totalInfo">-</span>
+</div>
+<div class="tableWrap">
+<table>
+<thead>
+<tr>
+<th>When</th>
+<th>Database</th>
+<th>Backup File</th>
+<th>Size</th>
+<th>How Created</th>
+<th>Status</th>
+<th>Integrity</th>
+<th>Stored At</th>
+<th></th>
+</tr>
+</thead>
+<tbody id="historyBody">
+<tr><td colspan="9" class="empty">Loading backups</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section class="bottomGrid">
+<div class="panel small">
+<div class="panelHead">
+<div>
+<h2>Recent Activity</h2>
+<p>Latest creations and checks, showing last 6 events</p>
+</div>
+</div>
+<div class="activity" id="activityList">
+<div class="empty">Loading activity</div>
+</div>
+</div>
+<div class="panel small">
+<div class="panelHead">
+<div>
+<h2>Check Backup Health</h2>
+<p>Run a health check on any backup</p>
+</div>
+</div>
+<div class="verifyArea">
+<p class="hint">A health check confirms the file exists, size is correct, gzip is valid and checksum matches. It is saved to verification history.</p>
+<div id="verifyResult" class="resultBox">Select Check on any row above</div>
+<div class="legend">
+<span><i class="dot ok"></i> Healthy</span>
+<span><i class="dot bad"></i> Failed</span>
+<span><i class="dot wait"></i> Pending</span>
+</div>
+</div>
+</div>
+</section>
+
+<footer>
+<p>Backups live on disk in ./backups as .sql.gz. Only the list is in the database. Zero to one join keeps it fast.</p>
+</footer>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

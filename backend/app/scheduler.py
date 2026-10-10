@@ -1,7 +1,4 @@
-# runs create_backup() automatically on a cron schedule (default: 02:00 daily)
-# apscheduler works out the next matching clock time from the cron string, sleeps until then,
-# runs the job, then computes the following one. the python process has to stay running.
-# two ways to run this: inside the api (main.py) or standalone with python -m cli.backup_vault_cli schedule
+
 import logging
 from datetime import datetime, timedelta
 

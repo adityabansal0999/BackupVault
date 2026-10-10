@@ -1,0 +1,1 @@
+SELECT COALESCE(SUM(file_size_bytes),0) as total_storage FROM backups WHERE status='SUCCESS' AND (%(date_from)s IS NULL OR created_at >= %(date_from)s) AND (%(date_to)s IS NULL OR created_at <= %(date_to)s)

@@ -1,4 +1,4 @@
-# all settings come from the .env file, never hard-code passwords
+
 import os
 from dotenv import load_dotenv
 load_dotenv()

@@ -1,6 +1,4 @@
-# creates one backup: mysqldump -> gzip file on disk -> metadata row in backupvault_meta
-# dump gets streamed straight into gzip so a big db never has to fit in ram
-# we use MYSQL_PWD env var instead of -pPASSWORD because that flag shows the password in the process list
+
 import gzip
 import hashlib
 import os
@@ -19,7 +17,7 @@ DUMP_TIMEOUT_SECONDS = 3600
 
 
 def _run_mysqldump(database_name, output_path):
-    # returns (ok, error_text). writes to <file>.part first, renames only on success
+   
     cmd = ["mysqldump", f"-h{DB_HOST}", f"-P{DB_PORT}", f"-u{DB_USER}", "--single-transaction", "--quick", "--routines", "--triggers", database_name]
     env = os.environ.copy()
     env["MYSQL_PWD"] = DB_PASSWORD
@@ -47,7 +45,7 @@ def _run_mysqldump(database_name, output_path):
         return False, str(e)[:500]
     finally:
         if os.path.exists(tmp_path):
-            os.remove(tmp_path)  # dont leave half written backups behind
+            os.remove(tmp_path) 
 
 
 def _sha256_of_file(path):
@@ -64,7 +62,6 @@ def create_backup(database_name=None, created_by="scheduler"):
     file_name = f"backup_{started.strftime('%Y_%m_%d_%H%M%S')}.sql.gz"
     file_path = os.path.join(BACKUP_DIR, file_name)
 
-    # row first with IN_PROGRESS, so even a crash leaves a trace in the history
     backup_id = backup_repo.insert_backup(file_name, file_path, 0, None, dbname, "IN_PROGRESS", started)
     conn = get_conn()
     cur = conn.cursor()
