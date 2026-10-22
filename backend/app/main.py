@@ -39,6 +39,8 @@ else:
     except:
         pass
 
+from fastapi.responses import RedirectResponse
+
 @app.get("/")
 def root():
-    return {"message": "BackupVault API running", "docs": "/docs"}
+    return RedirectResponse(url="/dashboard")

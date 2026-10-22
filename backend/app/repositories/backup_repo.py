@@ -87,7 +87,17 @@ def get_status_summary():
     try:
         cur = conn.cursor(dictionary=True)
         cur.execute(load_sql("get_status_summary"))
-        return cur.fetchone()
+        row = cur.fetchone()
+        return row or {
+            "last_file": None,
+            "last_status": None,
+            "last_time": None,
+            "total_storage": 0,
+            "success_rate": None,
+            "total": 0,
+            "next_run_at": None,
+            "cron_expression": "0 2 * * *"
+        }
     finally:
         cur.close()
         conn.close()
